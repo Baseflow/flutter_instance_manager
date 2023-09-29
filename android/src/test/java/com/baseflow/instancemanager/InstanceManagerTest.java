@@ -1,7 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license.
 
-package com.baseflow.instance_manager;
+package com.baseflow.instancemanager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

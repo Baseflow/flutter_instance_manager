@@ -1,4 +1,4 @@
-group 'com.example.flutter_instance_manager'
+group 'com.baseflow.instancemanager'
 version '1.0'
 
 buildscript {
@@ -23,7 +23,7 @@ apply plugin: 'com.android.library'
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace 'com.example.flutter_instance_manager'
+        namespace 'com.baseflow.instancemanager'
     }
 
     compileSdkVersion 33

@@ -1,15 +1,25 @@
-# flutter_instance_manager
+# Flutter Instance Manager
 
-A new Flutter plugin project.
+Provides an instance manager that can sync objects between Dart and native code.
 
-## Getting Started
+Supported native platforms:
+- Android
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## Getting started
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To include this package in your project, add the following to your `pubspec.yaml`:
 
+```yaml
+dependencies:
+  flutter_instance_manager:
+    git: https://github.com/baseflow/flutter_instance_manager.git
+```
+
+## Additional information
+
+The code for this plugin has mostly been copied from the plugins developed by
+the Flutter community. An example of this is the
+[webview_flutter](https://github.com/flutter/packages/tree/main/packages/webview_flutter)
+plugin.
+The intent of this package is to reuse the code for multiple plugins developed
+by Baseflow.

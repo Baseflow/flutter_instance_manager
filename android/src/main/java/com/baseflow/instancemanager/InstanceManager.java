@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package com.baseflow.instance_manager;
+package com.baseflow.instancemanager;
 
 import android.os.Handler;
 import android.os.Looper;
