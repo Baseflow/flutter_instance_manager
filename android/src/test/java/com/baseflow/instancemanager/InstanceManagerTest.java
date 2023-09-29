@@ -10,8 +10,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
-import org.junit.Test;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+
+@RunWith(RobolectricTestRunner.class)
 public class InstanceManagerTest {
     @Test
     public void addDartCreatedInstance() {
