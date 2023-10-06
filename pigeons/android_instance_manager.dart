@@ -5,7 +5,7 @@ import 'package:pigeon/pigeon.dart';
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/src/instance_manager.pigeon.dart',
-    dartTestOut: 'test/test_instance_manager.pigeon.dart',
+    dartTestOut: 'lib/test/test_instance_manager.pigeon.dart',
     javaOut:
         'android/src/main/java/com/baseflow/instancemanager/InstanceManagerPigeon.java',
     javaOptions: JavaOptions(
