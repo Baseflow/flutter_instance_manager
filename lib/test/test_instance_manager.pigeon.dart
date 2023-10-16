@@ -12,7 +12,8 @@ import '../src/instance_manager.pigeon.dart';
 
 /// Host API for managing the native `InstanceManager`.
 abstract class TestInstanceManagerHostApi {
-  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding => TestDefaultBinaryMessengerBinding.instance;
+  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding =>
+      TestDefaultBinaryMessengerBinding.instance;
   static const MessageCodec<Object?> codec = StandardMessageCodec();
 
   /// Clear the native `InstanceManager`.
@@ -20,15 +21,20 @@ abstract class TestInstanceManagerHostApi {
   /// This is typically only used after a hot restart.
   void clear();
 
-  static void setup(TestInstanceManagerHostApi? api, {BinaryMessenger? binaryMessenger}) {
+  static void setup(TestInstanceManagerHostApi? api,
+      {BinaryMessenger? binaryMessenger}) {
     {
       final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_instance_manager.InstanceManagerHostApi.clear', codec,
+          'dev.flutter.pigeon.flutter_instance_manager.InstanceManagerHostApi.clear',
+          codec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(channel,
+                (Object? message) async {
           // ignore message
           api.clear();
           return <Object?>[];
@@ -44,22 +50,28 @@ abstract class TestInstanceManagerHostApi {
 ///
 /// See https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html.
 abstract class TestJavaObjectHostApi {
-  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding => TestDefaultBinaryMessengerBinding.instance;
+  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding =>
+      TestDefaultBinaryMessengerBinding.instance;
   static const MessageCodec<Object?> codec = StandardMessageCodec();
 
   void dispose(String identifier);
 
-  static void setup(TestJavaObjectHostApi? api, {BinaryMessenger? binaryMessenger}) {
+  static void setup(TestJavaObjectHostApi? api,
+      {BinaryMessenger? binaryMessenger}) {
     {
       final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_instance_manager.JavaObjectHostApi.dispose', codec,
+          'dev.flutter.pigeon.flutter_instance_manager.JavaObjectHostApi.dispose',
+          codec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(channel,
+                (Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.flutter_instance_manager.JavaObjectHostApi.dispose was null.');
+              'Argument for dev.flutter.pigeon.flutter_instance_manager.JavaObjectHostApi.dispose was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final String? arg_identifier = (args[0] as String?);
           assert(arg_identifier != null,
