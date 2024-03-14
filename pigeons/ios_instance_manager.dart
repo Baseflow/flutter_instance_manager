@@ -1,16 +1,16 @@
 import 'package:pigeon/pigeon.dart';
 
 /// To regenerate using pigeon, run
-/// `dart run pigeon --input pigeons/android_instance_manager.dart`.
+/// `dart run pigeon --input pigeons/ios_instance_manager.dart`.
+
 @ConfigurePigeon(
   PigeonOptions(
-    dartOut: 'lib/src/android_instance_manager.pigeon.dart',
-    dartTestOut: 'lib/test/android_test_instance_manager.pigeon.dart',
-    javaOut:
-        'android/src/main/java/com/baseflow/instancemanager/InstanceManagerPigeon.java',
-    javaOptions: JavaOptions(
-      package: 'com.baseflow.instancemanager',
-      className: 'InstanceManagerPigeon',
+    dartOut: 'lib/src/ios_instance_manager.pigeon.dart',
+    dartTestOut: 'lib/test/ios_test_instance_manager.pigeon.dart',
+    objcHeaderOut: 'ios/InstanceManagerApis.h',
+    objcSourceOut: 'ios/InstanceManagerApis.m',
+    objcOptions: ObjcOptions(
+      headerIncludePath: 'ios/InstanceManagerApis.h',
     ),
   ),
 )

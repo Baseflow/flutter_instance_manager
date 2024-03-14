@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:uuid/uuid.dart';
 
 import 'instance_manager_test.mocks.dart';
-import 'test_instance_manager.pigeon.dart';
+import 'android_test_instance_manager.pigeon.dart';
 
 /// To regenerate using `build_runner`, run
 /// `dart run build_runner build`.
