@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^OnDeallocCallback)(long identifier);
+typedef void (^OnDeallocCallback)(NSUUID * identifier);
 
 /// Maintains instances used to communicate with the corresponding objects in Dart.
 ///
@@ -34,14 +34,14 @@ typedef void (^OnDeallocCallback)(long identifier);
 /// stored pairs in response to hot restarts.
 ///
 /// @param instance The instance to be stored.
-/// @param instanceIdentifier The identifier to be paired with instance. This value must be >= 0.
-- (void)addDartCreatedInstance:(NSObject *)instance withIdentifier:(long)instanceIdentifier;
+/// @param instanceIdentifier The identifier to be paired with instance..
+- (void)addDartCreatedInstance:(NSObject *)instance withIdentifier:(NSUUID *)instanceIdentifier;
 
 /// Adds a new instance that was instantiated from the host platform.
 ///
 /// @param instance The instance to be stored.
 /// @return The unique identifier stored with instance.
-- (long)addHostCreatedInstance:(nonnull NSObject *)instance;
+- (NSUUID *)addHostCreatedInstance:(nonnull NSObject *)instance;
 
 /// Removes `instanceIdentifier` and its associated strongly referenced instance, if present, from
 /// the manager.
@@ -50,7 +50,7 @@ typedef void (^OnDeallocCallback)(long identifier);
 ///
 /// @return The removed instance if the manager contains the given instanceIdentifier, otherwise
 /// nil.
-- (nullable NSObject *)removeInstanceWithIdentifier:(long)instanceIdentifier;
+- (nullable NSObject *)removeInstanceWithIdentifier:(NSUUID *)instanceIdentifier;
 
 /// Retrieves the instance associated with identifier.
 ///
@@ -58,7 +58,7 @@ typedef void (^OnDeallocCallback)(long identifier);
 ///
 /// @return The  instance associated with `instanceIdentifier` if the manager contains the value,
 /// otherwise nil.
-- (nullable NSObject *)instanceForIdentifier:(long)instanceIdentifier;
+- (nullable NSObject *)instanceForIdentifier:(NSUUID *)instanceIdentifier;
 
 /// Retrieves the identifier paired with an instance.
 ///
@@ -73,7 +73,7 @@ typedef void (^OnDeallocCallback)(long identifier);
 ///
 /// @return The identifier associated with `instance` if the manager contains the value, otherwise
 /// NSNotFound.
-- (long)identifierWithStrongReferenceForInstance:(nonnull NSObject *)instance;
+- (NSUUID *)identifierWithStrongReferenceForInstance:(nonnull NSObject *)instance;
 
 /// Returns whether this manager contains the given `instance`.
 ///

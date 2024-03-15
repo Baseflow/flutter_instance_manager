@@ -13,12 +13,12 @@
 
 // Attaches to an object to receive a callback when the object is deallocated.
 @implementation Finalizer {
-  long _identifier;
+  NSUUID * _identifier;
   // Callbacks are no longer made once InstanceManager is inaccessible.
   OnDeallocCallback __weak _callback;
 }
 
-- (instancetype)initWithIdentifier:(long)identifier callback:(OnDeallocCallback)callback {
+- (instancetype)initWithIdentifier:(NSUUID *)identifier callback:(OnDeallocCallback)callback {
   self = [self init];
   if (self) {
     _identifier = identifier;
@@ -28,7 +28,7 @@
 }
 
 + (void)attachToInstance:(NSObject *)instance
-          withIdentifier:(long)identifier
+          withIdentifier:(NSUUID *)identifier
                 callback:(OnDeallocCallback)callback {
   Finalizer *finalizer = [[Finalizer alloc] initWithIdentifier:identifier callback:callback];
   objc_setAssociatedObject(instance, _cmd, finalizer, OBJC_ASSOCIATION_RETAIN);
@@ -48,22 +48,17 @@
 
 @interface InstanceManager ()
 @property dispatch_queue_t lockQueue;
-@property NSMapTable<NSObject *, NSNumber *> *identifiers;
-@property NSMapTable<NSNumber *, NSObject *> *weakInstances;
-@property NSMapTable<NSNumber *, NSObject *> *strongInstances;
+@property NSMapTable<NSObject *, NSUUID *> *identifiers;
+@property NSMapTable<NSUUID *, NSObject *> *weakInstances;
+@property NSMapTable<NSUUID *, NSObject *> *strongInstances;
 @end
 
 @implementation InstanceManager
-// Identifiers are locked to a specific range to avoid collisions with objects
-// created simultaneously from Dart.
-// Host uses identifiers >= 2^16 and Dart is expected to use values n where,
-// 0 <= n < 2^16.
-static long const MinHostCreatedIdentifier = 65536;
 
 - (instancetype)init {
   self = [super init];
   if (self) {
-    _deallocCallback = _deallocCallback ? _deallocCallback : ^(long identifier) {
+    _deallocCallback = _deallocCallback ? _deallocCallback : ^(NSUUID * identifier) {
     };
     _lockQueue = dispatch_queue_create("InstanceManager", DISPATCH_QUEUE_SERIAL);
     // Pointer equality is used to prevent collisions of objects that override the `isEqualTo:`
@@ -77,7 +72,6 @@ static long const MinHostCreatedIdentifier = 65536;
     _strongInstances = [NSMapTable
         mapTableWithKeyOptions:NSMapTableStrongMemory
                   valueOptions:NSMapTableStrongMemory | NSMapTableObjectPointerPersonality];
-    _nextIdentifier = MinHostCreatedIdentifier;
   }
   return self;
 }
@@ -90,7 +84,7 @@ static long const MinHostCreatedIdentifier = 65536;
   return self;
 }
 
-- (void)addDartCreatedInstance:(NSObject *)instance withIdentifier:(long)instanceIdentifier {
+- (void)addDartCreatedInstance:(NSObject *)instance withIdentifier:(NSUUID *)instanceIdentifier {
   NSParameterAssert(instance);
   NSParameterAssert(instanceIdentifier >= 0);
   dispatch_async(_lockQueue, ^{
@@ -98,53 +92,53 @@ static long const MinHostCreatedIdentifier = 65536;
   });
 }
 
-- (long)addHostCreatedInstance:(nonnull NSObject *)instance {
+- (NSUUID *)addHostCreatedInstance:(nonnull NSObject *)instance {
   NSParameterAssert(instance);
-  long __block identifier = -1;
+  NSUUID * __block identifier = [NSUUID new];
   dispatch_sync(_lockQueue, ^{
-    identifier = self.nextIdentifier++;
+    identifier = [NSUUID new];
     [self addInstance:instance withIdentifier:identifier];
   });
   return identifier;
 }
 
-- (nullable NSObject *)removeInstanceWithIdentifier:(long)instanceIdentifier {
+- (nullable NSObject *)removeInstanceWithIdentifier:(NSUUID *)instanceIdentifier {
   NSObject *__block instance = nil;
   dispatch_sync(_lockQueue, ^{
-    instance = [self.strongInstances objectForKey:@(instanceIdentifier)];
+    instance = [self.strongInstances objectForKey:instanceIdentifier];
     if (instance) {
-      [self.strongInstances removeObjectForKey:@(instanceIdentifier)];
+        [self.strongInstances removeObjectForKey:instanceIdentifier];
     }
   });
   return instance;
 }
 
-- (nullable NSObject *)instanceForIdentifier:(long)instanceIdentifier {
+- (nullable NSObject *)instanceForIdentifier:(NSUUID *)instanceIdentifier {
   NSObject *__block instance = nil;
   dispatch_sync(_lockQueue, ^{
-    instance = [self.weakInstances objectForKey:@(instanceIdentifier)];
+    instance = [self.weakInstances objectForKey:instanceIdentifier];
   });
   return instance;
 }
 
-- (void)addInstance:(nonnull NSObject *)instance withIdentifier:(long)instanceIdentifier {
-  [self.identifiers setObject:@(instanceIdentifier) forKey:instance];
-  [self.weakInstances setObject:instance forKey:@(instanceIdentifier)];
-  [self.strongInstances setObject:instance forKey:@(instanceIdentifier)];
+- (void)addInstance:(nonnull NSObject *)instance withIdentifier:(NSUUID *)instanceIdentifier {
+  [self.identifiers setObject:instanceIdentifier forKey:instance];
+  [self.weakInstances setObject:instance forKey:instanceIdentifier];
+  [self.strongInstances setObject:instance forKey:instanceIdentifier];
   [Finalizer attachToInstance:instance
                   withIdentifier:instanceIdentifier
                         callback:self.deallocCallback];
 }
 
-- (long)identifierWithStrongReferenceForInstance:(nonnull NSObject *)instance {
-  NSNumber *__block identifierNumber = nil;
+- (NSUUID *)identifierWithStrongReferenceForInstance:(nonnull NSObject *)instance {
+  NSUUID *__block identifierNumber = nil;
   dispatch_sync(_lockQueue, ^{
     identifierNumber = [self.identifiers objectForKey:instance];
     if (identifierNumber) {
       [self.strongInstances setObject:instance forKey:identifierNumber];
     }
   });
-  return identifierNumber ? identifierNumber.longValue : NSNotFound;
+    return identifierNumber ? identifierNumber : [[NSUUID UUID] initWithUUIDString:@"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXXX"];;
 }
 
 - (BOOL)containsInstance:(nonnull NSObject *)instance {
