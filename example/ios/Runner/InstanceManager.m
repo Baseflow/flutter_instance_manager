@@ -2,23 +2,23 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "FWFInstanceManager.h"
-#import "FWFInstanceManager_Test.h"
+#import "InstanceManager.h"
+#import "InstanceManager_Test.h"
 
 #import <objc/runtime.h>
 
 // Attaches to an object to receive a callback when the object is deallocated.
-@interface FWFFinalizer : NSObject
+@interface Finalizer : NSObject
 @end
 
 // Attaches to an object to receive a callback when the object is deallocated.
-@implementation FWFFinalizer {
+@implementation Finalizer {
   long _identifier;
-  // Callbacks are no longer made once FWFInstanceManager is inaccessible.
-  FWFOnDeallocCallback __weak _callback;
+  // Callbacks are no longer made once InstanceManager is inaccessible.
+  OnDeallocCallback __weak _callback;
 }
 
-- (instancetype)initWithIdentifier:(long)identifier callback:(FWFOnDeallocCallback)callback {
+- (instancetype)initWithIdentifier:(long)identifier callback:(OnDeallocCallback)callback {
   self = [self init];
   if (self) {
     _identifier = identifier;
@@ -29,8 +29,8 @@
 
 + (void)attachToInstance:(NSObject *)instance
           withIdentifier:(long)identifier
-                callback:(FWFOnDeallocCallback)callback {
-  FWFFinalizer *finalizer = [[FWFFinalizer alloc] initWithIdentifier:identifier callback:callback];
+                callback:(OnDeallocCallback)callback {
+  Finalizer *finalizer = [[Finalizer alloc] initWithIdentifier:identifier callback:callback];
   objc_setAssociatedObject(instance, _cmd, finalizer, OBJC_ASSOCIATION_RETAIN);
 }
 
@@ -46,26 +46,26 @@
 }
 @end
 
-@interface FWFInstanceManager ()
+@interface InstanceManager ()
 @property dispatch_queue_t lockQueue;
 @property NSMapTable<NSObject *, NSNumber *> *identifiers;
 @property NSMapTable<NSNumber *, NSObject *> *weakInstances;
 @property NSMapTable<NSNumber *, NSObject *> *strongInstances;
 @end
 
-@implementation FWFInstanceManager
+@implementation InstanceManager
 // Identifiers are locked to a specific range to avoid collisions with objects
 // created simultaneously from Dart.
 // Host uses identifiers >= 2^16 and Dart is expected to use values n where,
 // 0 <= n < 2^16.
-static long const FWFMinHostCreatedIdentifier = 65536;
+static long const MinHostCreatedIdentifier = 65536;
 
 - (instancetype)init {
   self = [super init];
   if (self) {
     _deallocCallback = _deallocCallback ? _deallocCallback : ^(long identifier) {
     };
-    _lockQueue = dispatch_queue_create("FWFInstanceManager", DISPATCH_QUEUE_SERIAL);
+    _lockQueue = dispatch_queue_create("InstanceManager", DISPATCH_QUEUE_SERIAL);
     // Pointer equality is used to prevent collisions of objects that override the `isEqualTo:`
     // method.
     _identifiers =
@@ -77,12 +77,12 @@ static long const FWFMinHostCreatedIdentifier = 65536;
     _strongInstances = [NSMapTable
         mapTableWithKeyOptions:NSMapTableStrongMemory
                   valueOptions:NSMapTableStrongMemory | NSMapTableObjectPointerPersonality];
-    _nextIdentifier = FWFMinHostCreatedIdentifier;
+    _nextIdentifier = MinHostCreatedIdentifier;
   }
   return self;
 }
 
-- (instancetype)initWithDeallocCallback:(FWFOnDeallocCallback)callback {
+- (instancetype)initWithDeallocCallback:(OnDeallocCallback)callback {
   self = [self init];
   if (self) {
     _deallocCallback = callback;
@@ -131,7 +131,7 @@ static long const FWFMinHostCreatedIdentifier = 65536;
   [self.identifiers setObject:@(instanceIdentifier) forKey:instance];
   [self.weakInstances setObject:instance forKey:@(instanceIdentifier)];
   [self.strongInstances setObject:instance forKey:@(instanceIdentifier)];
-  [FWFFinalizer attachToInstance:instance
+  [Finalizer attachToInstance:instance
                   withIdentifier:instanceIdentifier
                         callback:self.deallocCallback];
 }

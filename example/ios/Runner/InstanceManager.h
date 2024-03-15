@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^FWFOnDeallocCallback)(long identifier);
+typedef void (^OnDeallocCallback)(long identifier);
 
 /// Maintains instances used to communicate with the corresponding objects in Dart.
 ///
@@ -21,9 +21,9 @@ typedef void (^FWFOnDeallocCallback)(long identifier);
 /// recreated. The strong reference will then need to be removed manually again.
 ///
 /// Accessing and inserting to an InstanceManager is thread safe.
-@interface FWFInstanceManager : NSObject
-@property(readonly) FWFOnDeallocCallback deallocCallback;
-- (instancetype)initWithDeallocCallback:(FWFOnDeallocCallback)callback;
+@interface InstanceManager : NSObject
+@property(readonly) OnDeallocCallback deallocCallback;
+- (instancetype)initWithDeallocCallback:(OnDeallocCallback)callback;
 
 // TODO(bparrishMines): Pairs should not be able to be overwritten and this feature
 // should be replaced with a call to clear the manager in the event of a hot restart.
