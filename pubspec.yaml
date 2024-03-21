@@ -27,3 +27,5 @@ flutter:
       android:
         package: com.baseflow.instancemanager
         pluginClass: FlutterInstanceManagerPlugin
+      ios:
+        pluginClass: FlutterInstanceManagerPlugin
