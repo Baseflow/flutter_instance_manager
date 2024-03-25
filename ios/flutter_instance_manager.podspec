@@ -5,19 +5,22 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_instance_manager'
   s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.summary          = 'A Flutter instance manager to Dart and native class instances in sync.'
   s.description      = <<-DESC
-A new Flutter plugin project.
+  A Flutter plugin that provides a instance manager that allows to keep class
+  instances in sync between Dart and Objective-C/ Swift.
+  Downloaded by pub (not CocoaPods).
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'http://github.com/baseflow/flutter_instance_manager'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Baseflow' => 'hello@baseflow.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'Classes/**/*.{h,m}'
   s.public_header_files = 'Classes/**/*.h'
+  s.module_map = 'Classes/FlutterInstanceManager.modulemap'
   s.dependency 'Flutter'
-  s.platform = :ios, '11.0'
-
-  # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  
+  s.platform = :ios, '12.0'
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.resource_bundles = {'flutter_instance_manager_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
 end

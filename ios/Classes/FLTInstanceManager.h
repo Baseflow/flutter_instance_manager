@@ -21,12 +21,10 @@ typedef void (^OnDeallocCallback)(NSUUID * identifier);
 /// recreated. The strong reference will then need to be removed manually again.
 ///
 /// Accessing and inserting to an InstanceManager is thread safe.
-@interface InstanceManager : NSObject
+@interface FLTInstanceManager : NSObject
 @property(readonly) OnDeallocCallback deallocCallback;
 - (instancetype)initWithDeallocCallback:(OnDeallocCallback)callback;
 
-// TODO(bparrishMines): Pairs should not be able to be overwritten and this feature
-// should be replaced with a call to clear the manager in the event of a hot restart.
 /// Adds a new instance that was instantiated from Dart.
 ///
 /// If an instance or identifier has already been added, it will be replaced by the new values. The

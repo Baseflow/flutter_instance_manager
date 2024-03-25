@@ -1,20 +1,16 @@
 #import "FlutterInstanceManagerPlugin.h"
 
+// Plugin class that exists because the Flutter tool expects such a class to exist for every iOS
+// plugin.
+//
+// <p><strong>DO NOT USE THIS CLASS.</strong>
 @implementation FlutterInstanceManagerPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"flutter_instance_manager"
-            binaryMessenger:[registrar messenger]];
-  FlutterInstanceManagerPlugin* instance = [[FlutterInstanceManagerPlugin alloc] init];
-  [registrar addMethodCallDelegate:instance channel:channel];
+  // no-op
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-  } else {
-    result(FlutterMethodNotImplemented);
-  }
+  // no-op
 }
 
 @end

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "InstanceManager.h"
-#import "InstanceManager_Test.h"
+#import "FLTInstanceManager.h"
+#import "FLTInstanceManager_Test.h"
 
 #import <objc/runtime.h>
 
@@ -46,14 +46,14 @@
 }
 @end
 
-@interface InstanceManager ()
+@interface FLTInstanceManager ()
 @property dispatch_queue_t lockQueue;
 @property NSMapTable<NSObject *, NSUUID *> *identifiers;
 @property NSMapTable<NSUUID *, NSObject *> *weakInstances;
 @property NSMapTable<NSUUID *, NSObject *> *strongInstances;
 @end
 
-@implementation InstanceManager
+@implementation FLTInstanceManager
 
 - (instancetype)init {
   self = [super init];
