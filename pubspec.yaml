@@ -1,6 +1,6 @@
 name: flutter_instance_manager
 description: A plugin that provides a mechanism to sync objects between Dart and native code.
-version: 0.1.0
+version: 0.2.0
 publish_to: none
 
 environment:
@@ -26,4 +26,6 @@ flutter:
     platforms:
       android:
         package: com.baseflow.instancemanager
+        pluginClass: FlutterInstanceManagerPlugin
+      ios:
         pluginClass: FlutterInstanceManagerPlugin
