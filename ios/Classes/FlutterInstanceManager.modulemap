@@ -1,11 +1,11 @@
 //
 //  FlutterInstanceManager.modulemap
-//  flutter_instance_manager
+//  FlutterInstanceManager
 //
 //  Created by Maurits van Beusekom on 25/03/2024.
 //
 
-framework module flutter_instance_manager {
+framework module FlutterInstanceManager {
   umbrella header "FLTInstanceManager-umbrella.h"
   
   export *
