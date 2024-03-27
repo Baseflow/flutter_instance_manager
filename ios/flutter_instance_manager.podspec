@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*.{h,m}'
   s.public_header_files = 'Classes/**/*.h'
-  s.module_map = 'Classes/FlutterInstanceManager.modulemap'
+  s.module_map = 'Classes/flutter_instance_manager.modulemap'
   s.dependency 'Flutter'
   
   s.platform = :ios, '12.0'
