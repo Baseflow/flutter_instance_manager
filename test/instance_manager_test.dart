@@ -28,6 +28,23 @@ void main() {
       );
     });
 
+    test('addHostCreatedInstance with uppercase identifier', () {
+      final CopyableObject object = CopyableObject();
+
+      final InstanceManager instanceManager =
+          InstanceManager(onWeakReferenceRemoved: (_) {});
+      const Uuid uuid = Uuid();
+      final String identifier = uuid.v4();
+
+      instanceManager.addHostCreatedInstance(object, identifier.toUpperCase());
+
+      expect(instanceManager.getIdentifier(object), identifier);
+      expect(
+        instanceManager.getInstanceWithWeakReference(identifier),
+        object,
+      );
+    });
+
     test(
         'addHostCreatedInstance prevents empty string to be used as identifier',
         () {
@@ -76,6 +93,24 @@ void main() {
       expect(instanceId, isNotNull);
       expect(
         instanceManager.getInstanceWithWeakReference(instanceId!),
+        object,
+      );
+    });
+
+    test('getInstanceWithWeakReference should work with uppercase identifier',
+        () {
+      final CopyableObject object = CopyableObject();
+
+      final InstanceManager instanceManager =
+          InstanceManager(onWeakReferenceRemoved: (_) {});
+      const Uuid uuid = Uuid();
+      final String identifier = uuid.v4();
+
+      instanceManager.addHostCreatedInstance(object, identifier);
+
+      expect(instanceManager.getIdentifier(object), identifier);
+      expect(
+        instanceManager.getInstanceWithWeakReference(identifier.toUpperCase()),
         object,
       );
     });
@@ -130,6 +165,21 @@ void main() {
       instanceManager.addHostCreatedInstance(object, identifier);
       instanceManager.removeWeakReference(object);
       expect(instanceManager.remove(identifier), isA<CopyableObject>());
+      expect(instanceManager.containsIdentifier(identifier), isFalse);
+    });
+
+    test('removeStrongReference with uppercase identifier', () {
+      final CopyableObject object = CopyableObject();
+
+      const Uuid uuid = Uuid();
+      final String identifier = uuid.v4();
+      final InstanceManager instanceManager =
+          InstanceManager(onWeakReferenceRemoved: (_) {});
+
+      instanceManager.addHostCreatedInstance(object, identifier);
+      instanceManager.removeWeakReference(object);
+      expect(instanceManager.remove(identifier.toUpperCase()),
+          isA<CopyableObject>());
       expect(instanceManager.containsIdentifier(identifier), isFalse);
     });
 
