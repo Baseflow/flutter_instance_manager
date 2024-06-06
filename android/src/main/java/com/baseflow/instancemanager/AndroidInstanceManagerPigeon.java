@@ -24,7 +24,7 @@ import java.util.Map;
 
 /** Generated class from Pigeon. */
 @SuppressWarnings({"unused", "unchecked", "CodeBlock2Expr", "RedundantSuppression", "serial"})
-public class InstanceManagerPigeon {
+public class AndroidInstanceManagerPigeon {
 
   /** Error class for passing custom error details to Flutter via a thrown PlatformException. */
   public static class FlutterError extends RuntimeException {
@@ -64,7 +64,7 @@ public class InstanceManagerPigeon {
    *
    * Generated interface from Pigeon that represents a handler of messages from Flutter.
    */
-  public interface InstanceManagerHostApi {
+  public interface AndroidInstanceManagerHostApi {
     /**
      * Clear the native `InstanceManager`.
      *
@@ -72,16 +72,16 @@ public class InstanceManagerPigeon {
      */
     void clear();
 
-    /** The codec used by InstanceManagerHostApi. */
+    /** The codec used by AndroidInstanceManagerHostApi. */
     static @NonNull MessageCodec<Object> getCodec() {
       return new StandardMessageCodec();
     }
-    /**Sets up an instance of `InstanceManagerHostApi` to handle messages through the `binaryMessenger`. */
-    static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable InstanceManagerHostApi api) {
+    /**Sets up an instance of `AndroidInstanceManagerHostApi` to handle messages through the `binaryMessenger`. */
+    static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable AndroidInstanceManagerHostApi api) {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.flutter_instance_manager.InstanceManagerHostApi.clear", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.flutter_instance_manager.AndroidInstanceManagerHostApi.clear", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {

@@ -4,20 +4,21 @@ import 'package:pigeon/pigeon.dart';
 /// `dart run pigeon --input pigeons/android_instance_manager.dart`.
 @ConfigurePigeon(
   PigeonOptions(
-    dartOut: 'lib/src/instance_manager.pigeon.dart',
-    dartTestOut: 'lib/test/test_instance_manager.pigeon.dart',
+    dartOut: 'lib/src/android/android_instance_manager.pigeon.dart',
+    dartTestOut: 'lib/test/android/test_android_instance_manager.pigeon.dart',
     javaOut:
-        'android/src/main/java/com/baseflow/instancemanager/InstanceManagerPigeon.java',
+        'android/src/main/java/com/baseflow/instancemanager/AndroidInstanceManagerPigeon.java',
     javaOptions: JavaOptions(
       package: 'com.baseflow.instancemanager',
-      className: 'InstanceManagerPigeon',
+      className: 'AndroidInstanceManagerPigeon',
     ),
+    copyrightHeader: 'pigeons/copyright.txt',
   ),
 )
 
 /// Host API for managing the native `InstanceManager`.
-@HostApi(dartHostTestHandler: 'TestInstanceManagerHostApi')
-abstract class InstanceManagerHostApi {
+@HostApi(dartHostTestHandler: 'TestAndroidInstanceManagerHostApi')
+abstract class AndroidInstanceManagerHostApi {
   /// Clear the native `InstanceManager`.
   ///
   /// This is typically only used after a hot restart.

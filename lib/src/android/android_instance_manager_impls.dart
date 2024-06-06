@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 
 import 'android_instance_manager.dart';
-import 'instance_manager.dart';
-import 'instance_manager.pigeon.dart';
+import '../instance_manager.dart';
+import 'android_instance_manager.pigeon.dart';
 
 /// Handles method calls to the native Java Object class.
 class JavaObjectHostApiImpl extends JavaObjectHostApi {

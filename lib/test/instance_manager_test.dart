@@ -1,19 +1,12 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license.
 
-import 'package:flutter_instance_manager/src/android_instance_manager.dart';
 import 'package:flutter_instance_manager/src/instance_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:uuid/uuid.dart';
-
-import 'instance_manager_test.mocks.dart';
-import 'test_instance_manager.pigeon.dart';
 
 /// To regenerate using `build_runner`, run
 /// `dart run build_runner build`.
-@GenerateMocks(<Type>[TestInstanceManagerHostApi])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -172,20 +165,6 @@ void main() {
         identifier,
       )!;
       expect(identical(object, newWeakCopy), isFalse);
-    });
-
-    test('globalInstanceManager clears native `InstanceManager`', () {
-      final MockTestInstanceManagerHostApi mockApi =
-          MockTestInstanceManagerHostApi();
-      TestInstanceManagerHostApi.setup(mockApi);
-
-      // Calls method to clear the native InstanceManager.
-      // ignore: unnecessary_statements
-      JavaObject.globalInstanceManager;
-
-      verify(mockApi.clear());
-
-      TestInstanceManagerHostApi.setup(null);
     });
   });
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_instance_manager/src/android/android_instance_manager.pigeon.dart';
 
-import 'android_instance_manager_api_impls.dart';
-import 'instance_manager.dart';
-import 'instance_manager.pigeon.dart';
+import 'android_instance_manager_impls.dart';
+import '../instance_manager.dart';
 
 /// Root of the Java class hierarchy.
 ///
@@ -28,7 +28,7 @@ class JavaObject with Copyable {
   static InstanceManager _initInstanceManager() {
     WidgetsFlutterBinding.ensureInitialized();
     // Clears the native `InstanceManager` on initial use of the Dart one.
-    InstanceManagerHostApi().clear();
+    AndroidInstanceManagerHostApi().clear();
     return InstanceManager(
       onWeakReferenceRemoved: (String identifier) {
         JavaObjectHostApiImpl().dispose(identifier);
