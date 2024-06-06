@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
+import io.flutter.plugin.common.BinaryMessenger;
+
 /**
  * Maintains instances used to communicate with the corresponding objects in
  * Dart.
@@ -67,6 +69,27 @@ public class InstanceManager {
     private final FinalizationListener finalizationListener;
 
     private boolean hasFinalizationListenerStopped = false;
+
+    /**
+     * Instantiate a new manager.
+     *
+     * <p>
+     * When the manager is no longer needed, {@link #stopFinalizationListener()}
+     * must be called.
+     * This method will inform Dart about the finalization through the
+     * {@link com.baseflow.instancemanager.AndroidInstanceManagerPigeon.JavaObjectFlutterApi}. If
+     * you prefer to provide a custom finalizer please use the {@link #create(FinalizationListener)}
+     * instead.
+     * </p>
+     *
+     * @param binaryMessenger the binaryMessenger used to communicate with Dart.
+     * @return a new `InstanceManager`.
+     */
+    public static InstanceManager create(@NonNull BinaryMessenger binaryMessenger) {
+        return new InstanceManager(identifier ->
+            new AndroidInstanceManagerPigeon.JavaObjectFlutterApi(binaryMessenger)
+                .dispose(identifier.toString(), reply -> {}));
+      }
 
     /**
      * Instantiate a new manager.
