@@ -26,3 +26,4 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^4.0.0
+  pigeon: ^19.0.2

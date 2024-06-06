@@ -8,11 +8,12 @@ import 'package:pigeon/pigeon.dart';
 ///
 @ConfigurePigeon(PigeonOptions(
   dartOut: 'lib/src/foundation/foundation_instance_manager.pigeon.dart',
-  dartTestOut: 'lib/test/foundation/test_foundation_instance_manager.pigeon.dart',
+  dartTestOut:
+      'lib/test/foundation/test_foundation_instance_manager.pigeon.dart',
   dartOptions: DartOptions(),
-  swiftOut: 'ios/Classes/FoundationApi/foundation.pigeon.swift',
-  swiftOptions: SwiftOptions(),
-  objcOptions: ObjcOptions(prefix: 'FTL'),
+  objcHeaderOut: 'ios/Classes/foundation.pigeon.h',
+  objcSourceOut: 'ios/Classes/foundation.pigeon.m',
+  objcOptions: ObjcOptions(prefix: 'FLT'),
   copyrightHeader: 'pigeons/copyright.txt',
 ))
 
