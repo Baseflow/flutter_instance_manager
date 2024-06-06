@@ -1,7 +1,8 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license.
 
-import 'package:flutter_instance_manager/src/instance_manager.dart';
+import 'package:flutter_instance_manager/flutter_instance_manager.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,6 +21,23 @@ void main() {
       final String identifier = uuid.v4();
 
       instanceManager.addHostCreatedInstance(object, identifier);
+
+      expect(instanceManager.getIdentifier(object), identifier);
+      expect(
+        instanceManager.getInstanceWithWeakReference(identifier),
+        object,
+      );
+    });
+
+    test('addHostCreatedInstance with uppercase identifier', () {
+      final CopyableObject object = CopyableObject();
+
+      final InstanceManager instanceManager =
+          InstanceManager(onWeakReferenceRemoved: (_) {});
+      const Uuid uuid = Uuid();
+      final String identifier = uuid.v4();
+
+      instanceManager.addHostCreatedInstance(object, identifier.toUpperCase());
 
       expect(instanceManager.getIdentifier(object), identifier);
       expect(
@@ -80,6 +98,24 @@ void main() {
       );
     });
 
+    test('getInstanceWithWeakReference should work with uppercase identifier',
+        () {
+      final CopyableObject object = CopyableObject();
+
+      final InstanceManager instanceManager =
+          InstanceManager(onWeakReferenceRemoved: (_) {});
+      const Uuid uuid = Uuid();
+      final String identifier = uuid.v4();
+
+      instanceManager.addHostCreatedInstance(object, identifier);
+
+      expect(instanceManager.getIdentifier(object), identifier);
+      expect(
+        instanceManager.getInstanceWithWeakReference(identifier.toUpperCase()),
+        object,
+      );
+    });
+
     test('removeWeakReference', () {
       final CopyableObject object = CopyableObject();
 
@@ -130,6 +166,21 @@ void main() {
       instanceManager.addHostCreatedInstance(object, identifier);
       instanceManager.removeWeakReference(object);
       expect(instanceManager.remove(identifier), isA<CopyableObject>());
+      expect(instanceManager.containsIdentifier(identifier), isFalse);
+    });
+
+    test('removeStrongReference with uppercase identifier', () {
+      final CopyableObject object = CopyableObject();
+
+      const Uuid uuid = Uuid();
+      final String identifier = uuid.v4();
+      final InstanceManager instanceManager =
+          InstanceManager(onWeakReferenceRemoved: (_) {});
+
+      instanceManager.addHostCreatedInstance(object, identifier);
+      instanceManager.removeWeakReference(object);
+      expect(instanceManager.remove(identifier.toUpperCase()),
+          isA<CopyableObject>());
       expect(instanceManager.containsIdentifier(identifier), isFalse);
     });
 

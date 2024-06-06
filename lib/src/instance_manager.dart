@@ -108,7 +108,7 @@ class InstanceManager {
   /// This does not remove the weak referenced instance associated with
   /// [identifier]. This can be done with [removeWeakReference].
   T? remove<T extends Copyable>(String identifier) {
-    return _strongInstances.remove(identifier) as T?;
+    return _strongInstances.remove(identifier.toLowerCase()) as T?;
   }
 
   /// Retrieves the instance associated with identifier.
@@ -124,15 +124,16 @@ class InstanceManager {
   /// This method also expects the host `InstanceManager` to have a strong
   /// reference to the instance the identifier is associated with.
   T? getInstanceWithWeakReference<T extends Copyable>(String identifier) {
-    final Copyable? weakInstance = _weakInstances[identifier]?.target;
+    final String id = identifier.toLowerCase();
+    final Copyable? weakInstance = _weakInstances[id]?.target;
 
     if (weakInstance == null) {
-      final Copyable? strongInstance = _strongInstances[identifier];
+      final Copyable? strongInstance = _strongInstances[id];
       if (strongInstance != null) {
         final Copyable copy = strongInstance.copy();
-        _identifiers[copy] = identifier;
-        _weakInstances[identifier] = WeakReference<Copyable>(copy);
-        _finalizer.attach(copy, identifier, detach: copy);
+        _identifiers[copy] = id;
+        _weakInstances[id] = WeakReference<Copyable>(copy);
+        _finalizer.attach(copy, id, detach: copy);
         return copy as T;
       }
       return strongInstance as T?;
@@ -156,7 +157,7 @@ class InstanceManager {
   ///
   /// Returns unique identifier of the [instance] added.
   void addHostCreatedInstance(Copyable instance, String identifier) {
-    _addInstanceWithIdentifier(instance, identifier);
+    _addInstanceWithIdentifier(instance, identifier.toLowerCase());
   }
 
   void _addInstanceWithIdentifier(Copyable instance, String identifier) {
@@ -175,8 +176,9 @@ class InstanceManager {
 
   /// Whether this manager contains the given [identifier].
   bool containsIdentifier(String identifier) {
-    return _weakInstances.containsKey(identifier) ||
-        _strongInstances.containsKey(identifier);
+    final String id = identifier.toLowerCase();
+
+    return _weakInstances.containsKey(id) || _strongInstances.containsKey(id);
   }
 
   String _nextUniqueIdentifier() {
