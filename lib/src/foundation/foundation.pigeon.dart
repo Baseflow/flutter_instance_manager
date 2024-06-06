@@ -26,7 +26,8 @@ class NSObjectHostApi {
 
   Future<void> dispose(String arg_identifier) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.flutter_instance_manager.NSObjectHostApi.dispose', codec,
+        'dev.flutter.pigeon.flutter_instance_manager.NSObjectHostApi.dispose',
+        codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(<Object?>[arg_identifier]) as List<Object?>?;
@@ -55,17 +56,19 @@ abstract class NSObjectFlutterApi {
 
   void dispose(String identifier);
 
-  static void setup(NSObjectFlutterApi? api, {BinaryMessenger? binaryMessenger}) {
+  static void setup(NSObjectFlutterApi? api,
+      {BinaryMessenger? binaryMessenger}) {
     {
       final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_instance_manager.NSObjectFlutterApi.dispose', codec,
+          'dev.flutter.pigeon.flutter_instance_manager.NSObjectFlutterApi.dispose',
+          codec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
         channel.setMessageHandler(null);
       } else {
         channel.setMessageHandler((Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.flutter_instance_manager.NSObjectFlutterApi.dispose was null.');
+              'Argument for dev.flutter.pigeon.flutter_instance_manager.NSObjectFlutterApi.dispose was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final String? arg_identifier = (args[0] as String?);
           assert(arg_identifier != null,

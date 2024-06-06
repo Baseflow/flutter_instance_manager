@@ -27,10 +27,10 @@ class AndroidInstanceManagerHostApi {
   /// This is typically only used after a hot restart.
   Future<void> clear() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.flutter_instance_manager.AndroidInstanceManagerHostApi.clear', codec,
+        'dev.flutter.pigeon.flutter_instance_manager.AndroidInstanceManagerHostApi.clear',
+        codec,
         binaryMessenger: _binaryMessenger);
-    final List<Object?>? replyList =
-        await channel.send(null) as List<Object?>?;
+    final List<Object?>? replyList = await channel.send(null) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -65,7 +65,8 @@ class JavaObjectHostApi {
 
   Future<void> dispose(String arg_identifier) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.flutter_instance_manager.JavaObjectHostApi.dispose', codec,
+        'dev.flutter.pigeon.flutter_instance_manager.JavaObjectHostApi.dispose',
+        codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(<Object?>[arg_identifier]) as List<Object?>?;
@@ -94,17 +95,19 @@ abstract class JavaObjectFlutterApi {
 
   void dispose(String identifier);
 
-  static void setup(JavaObjectFlutterApi? api, {BinaryMessenger? binaryMessenger}) {
+  static void setup(JavaObjectFlutterApi? api,
+      {BinaryMessenger? binaryMessenger}) {
     {
       final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_instance_manager.JavaObjectFlutterApi.dispose', codec,
+          'dev.flutter.pigeon.flutter_instance_manager.JavaObjectFlutterApi.dispose',
+          codec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
         channel.setMessageHandler(null);
       } else {
         channel.setMessageHandler((Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.flutter_instance_manager.JavaObjectFlutterApi.dispose was null.');
+              'Argument for dev.flutter.pigeon.flutter_instance_manager.JavaObjectFlutterApi.dispose was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final String? arg_identifier = (args[0] as String?);
           assert(arg_identifier != null,

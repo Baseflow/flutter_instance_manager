@@ -17,23 +17,35 @@ import '../../src/foundation/foundation_instance_manager.pigeon.dart';
 ///
 /// See https://developer.apple.com/documentation/objectivec/nsobject.
 abstract class TestNSObjectHostApi {
-  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding => TestDefaultBinaryMessengerBinding.instance;
-  static const MessageCodec<Object?> pigeonChannelCodec = StandardMessageCodec();
+  static TestDefaultBinaryMessengerBinding? get _testBinaryMessengerBinding =>
+      TestDefaultBinaryMessengerBinding.instance;
+  static const MessageCodec<Object?> pigeonChannelCodec =
+      StandardMessageCodec();
 
   void dispose(String identifier);
 
-  static void setUp(TestNSObjectHostApi? api, {BinaryMessenger? binaryMessenger, String messageChannelSuffix = '',}) {
-    messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  static void setUp(
+    TestNSObjectHostApi? api, {
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) {
+    messageChannelSuffix =
+        messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
     {
-      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_instance_manager.NSObjectHostApi.dispose$messageChannelSuffix', pigeonChannelCodec,
+      final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<
+              Object?>(
+          'dev.flutter.pigeon.flutter_instance_manager.NSObjectHostApi.dispose$messageChannelSuffix',
+          pigeonChannelCodec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel, null);
       } else {
-        _testBinaryMessengerBinding!.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(__pigeon_channel, (Object? message) async {
+        _testBinaryMessengerBinding!.defaultBinaryMessenger
+            .setMockDecodedMessageHandler<Object?>(__pigeon_channel,
+                (Object? message) async {
           assert(message != null,
-          'Argument for dev.flutter.pigeon.flutter_instance_manager.NSObjectHostApi.dispose was null.');
+              'Argument for dev.flutter.pigeon.flutter_instance_manager.NSObjectHostApi.dispose was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final String? arg_identifier = (args[0] as String?);
           assert(arg_identifier != null,
@@ -43,8 +55,9 @@ abstract class TestNSObjectHostApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
           }
         });
       }
