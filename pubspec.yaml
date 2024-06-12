@@ -1,6 +1,6 @@
 name: flutter_instance_manager
 description: A plugin that provides a mechanism to sync objects between Dart and native code.
-version: 0.2.0
+version: 0.3.0
 publish_to: none
 
 environment:
@@ -26,3 +26,4 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^4.0.0
+  pigeon: ^19.0.2

@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license.
 
 import 'package:flutter_instance_manager/flutter_instance_manager.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:uuid/uuid.dart';
 
