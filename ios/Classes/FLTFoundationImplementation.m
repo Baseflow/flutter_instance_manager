@@ -28,7 +28,7 @@
 @implementation FLTObject
 - (instancetype)initWithBinaryMessenger:(id<FlutterBinaryMessenger>)binaryMessenger
                         instanceManager:(FLTInstanceManager *)instanceManager {
-  self = [self init];
+  self = [super init];
   if (self) {
     _objectApi = [[FLTObjectFlutterApiImpl alloc] initWithBinaryMessenger:binaryMessenger
                                                           instanceManager:instanceManager];

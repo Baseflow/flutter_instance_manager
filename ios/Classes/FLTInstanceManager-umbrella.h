@@ -6,3 +6,5 @@
 
 #import "FlutterInstanceManagerPlugin.h"
 #import "FLTInstanceManager.h"
+#import "FLTFoundationImplementation.h"
+#import "foundation.pigeon.h"
